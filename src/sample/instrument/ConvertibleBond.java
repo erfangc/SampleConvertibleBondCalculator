@@ -1,21 +1,16 @@
 package sample.instrument;
 
-import java.util.Date;
-
 public class ConvertibleBond {
 
 	private double convertRatio;
 	private double notionalAmt;
-	private Date maturity;
 	private double yearsToMaturity;
 	private double coupon;
 	private Stock underlyingStock;
 	
-	public ConvertibleBond(double convertRatio, double notionalAmt,
-			Date maturity, double yrsToMat , double coupon, Stock underlyingStock) {
+	public ConvertibleBond(double convertRatio, double notionalAmt, double yrsToMat , double coupon, Stock underlyingStock) {
 		this.convertRatio = convertRatio;
 		this.notionalAmt = notionalAmt;
-		this.maturity = maturity;
 		this.coupon = coupon;
 		this.yearsToMaturity = yrsToMat;
 		this.underlyingStock = underlyingStock;
@@ -45,14 +40,6 @@ public class ConvertibleBond {
 		this.notionalAmt = notionalAmt;
 	}
 
-	public Date getMaturity() {
-		return maturity;
-	}
-
-	public void setMaturity(Date maturity) {
-		this.maturity = maturity;
-	}
-
 	public double getCoupon() {
 		return coupon;
 	}
@@ -72,8 +59,7 @@ public class ConvertibleBond {
 	@Override
 	public String toString() {
 		return "ConvertibleBond [convertRatio=" + convertRatio
-				+ ", notionalAmt=" + notionalAmt + ", maturity=" + maturity
-				+ ", coupon=" + coupon + ", underlyingStock=" + underlyingStock
+				+ ", notionalAmt=" + notionalAmt + ", coupon=" + coupon + ", underlyingStock=" + underlyingStock
 				+ "]";
 	}
 

@@ -1,8 +1,9 @@
 package sample.tree;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+
+import sample.instrument.ConvertibleBond;
 
 /**
  * The Binomial Tree Object Seeks to Construct a array of nodes and Define their relationships
@@ -14,58 +15,64 @@ import java.util.HashMap;
  */
 public class BinomialTree {
 
-	private ArrayList<ArrayList<JDBinomialNode>> tree; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
+	private ArrayList<ArrayList<JDBinomialNode>> nodesAL; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
 	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
 	private JDBinomialNode rootNode;                         // Entry point on the tree
 	private int numSteps; 
+	private ConvertibleBond cb;
 	
 	// Shared Parameters for all nodes, from which the node specific fields are determined
-	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove;
+	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt;
 	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
 		
+		System.out.println("Creating Tree with "+nSteps+" Steps");
+		
 		// Reset All
-		tree = null;
+		nodesAL = null;
 		terminalNodes = null;
 		rootNode = null;
 		
 		rootNode = new JDBinomialNode(true,false,new HashMap<String, Object>(),null, null, 0, 0);
 		
-		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps-1][];
+		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps][];		
 		JDBinomialNode[] rootWrapper = new JDBinomialNode[1];
 		rootWrapper[0] = rootNode;
 		nodes[0] = rootWrapper;
 		
 		// Parallel ArrayList Object
-		tree = new ArrayList<ArrayList<JDBinomialNode>>();
-		tree.add((ArrayList<JDBinomialNode>) Arrays.asList(nodes[0]));
+		nodesAL = new ArrayList<ArrayList<JDBinomialNode>>();
+		ArrayList<JDBinomialNode> rootArrayList = new ArrayList<JDBinomialNode>();
+		rootArrayList.add(rootNode);
+		nodesAL.add(rootArrayList);
 		
 		for (int n = 1; n < nSteps; n++) {
 			
 			boolean isTerminal = n == (nSteps-1) ? true : false;
 			
-			JDBinomialNode[] nodesCurrentStep = new JDBinomialNode[n];			
+			JDBinomialNode[] currentStep = new JDBinomialNode[n+1];			
 			// # of Nodes on a Given Step in the Tree Correspond to
 			// the Current Step n/nSteps
-			for (int i = 0; i < n; i++) {
-				nodesCurrentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null, null, n, i);
-				nodesCurrentStep[i].setStep(n);
-				nodesCurrentStep[i].setNodeNumber(i);
-				nodesCurrentStep[i].setMyTree(this);
+			ArrayList<JDBinomialNode> currentStepAL = new ArrayList<JDBinomialNode>();
+			for (int i = 0; i < n + 1; i++) {
+				currentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null, null, n, i);
+				currentStep[i].setStep(n);
+				currentStep[i].setNodeNumber(i);
+				currentStep[i].setMyTree(this);
+				currentStepAL.add(currentStep[i]);
 			}
 			
-			nodes[n] = nodesCurrentStep;
+			nodes[n] = currentStep;
 			if (isTerminal) {
-				terminalNodes = new ArrayList<JDBinomialNode>(Arrays.asList(nodesCurrentStep));
+				terminalNodes = currentStepAL;
 			}
 			
 			// Having created node[n-1] and node[n], we must associate nodes in n as children of nodes in n-1
 			mapChildren(nodes[n], nodes[n-1]);
 			
 			// Convert current step to ArrayList to be added to masterTree
-			ArrayList<JDBinomialNode> asArrList = (ArrayList<JDBinomialNode>) Arrays.asList(nodesCurrentStep);
-			tree.add(asArrList);
+			nodesAL.add(currentStepAL);
 			
 		}
 		
@@ -73,7 +80,7 @@ public class BinomialTree {
 	
 	public BinomialTree() {
 		super();
-		createEmptyTree(2);
+		createEmptyTree(2); // Default Tree is 2 Steps
 	}
 	
 	public BinomialTree(int nSteps) {
@@ -89,16 +96,19 @@ public class BinomialTree {
 	 * @param parents
 	 */
 	public void mapChildren(JDBinomialNode[] children, JDBinomialNode[] parents) {
-		// TODO Implement this ... Map all the Nodes here to their Children
+		for (int i = 0; i < parents.length; i++) {
+			parents[i].setChildUp(children[i]);
+			parents[i].setChildDn(children[i+1]);
+		}
 	}
 
 	// Getter and Setters
 	public ArrayList<ArrayList<JDBinomialNode>> getMasterTree() {
-		return tree;
+		return nodesAL;
 	}
 
 	public void setMasterTree(ArrayList<ArrayList<JDBinomialNode>> masterTree) {
-		this.tree = masterTree;
+		this.nodesAL = masterTree;
 	}
 
 	public ArrayList<JDBinomialNode> getTerminalNodes() {
@@ -126,11 +136,11 @@ public class BinomialTree {
 	}
 
 	public ArrayList<ArrayList<JDBinomialNode>> getTree() {
-		return tree;
+		return nodesAL;
 	}
 
 	public void setTree(ArrayList<ArrayList<JDBinomialNode>> tree) {
-		this.tree = tree;
+		this.nodesAL = tree;
 	}
 
 	public double getRf() {
@@ -187,6 +197,22 @@ public class BinomialTree {
 
 	public void setDnMove(double dnMove) {
 		this.dnMove = dnMove;
+	}
+
+	public double getDt() {
+		return dt;
+	}
+
+	public void setDt(double dt) {
+		this.dt = dt;
+	}
+
+	public ConvertibleBond getCb() {
+		return cb;
+	}
+
+	public void setCb(ConvertibleBond cb) {
+		this.cb = cb;
 	}
 	
 }

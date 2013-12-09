@@ -3,8 +3,11 @@
  */
 package sample.tree.calculators;
 
+import java.util.ArrayList;
+
 import sample.instrument.ConvertibleBond;
 import sample.tree.BinomialTree;
+import sample.tree.JDBinomialNode;
 import sample.tree.JDTreeUntil;
 
 /**
@@ -22,10 +25,8 @@ public class TreeAnalyticProcessor {
 	private ConvertibleBond cb;
 	private double price = Double.NaN; // Output
 	
-	public TreeAnalyticProcessor(ConvertibleBond cb,
-			double price) {
+	public TreeAnalyticProcessor(ConvertibleBond cb) {
 		this.cb = cb;
-		this.price = price;
 	}
 
 	/**
@@ -35,20 +36,33 @@ public class TreeAnalyticProcessor {
 	 * 1) Create a empty Binomial tree
 	 * 2) Populate the Shared parameters for every node (vol, Up Move size ... etc )
 	 * 3) Generate the Equity prices associated with each node
-	 * 4) Generate hazard rate based on the equity prices
-	 * 5) Generate up/down/default probabilities
-	 * 6) Backward Induct the Bond's price by calling getDerivValue() on the Terminal nodes then move backwards
+	 * 4) Backward Induct the Bond's price by calling getDerivValue() on the Terminal nodes then move backwards
 	 *  
 	 * @return price of the bond
 	 */
-	private double computePrice() {
+	public double computePrice() {
 		
 		// 1,2) Create an empty binomial tree and populate it with the correct parameters
-		tree = JDTreeUntil.initializeBinomialTreeWithParams(cb, 2);
+		tree = JDTreeUntil.initializeBinomialTreeWithParams(cb, 5);
 		
-		//TODO Implement the Other Steps		
+		// 3) Generate Equity Process for each node
+		ArrayList<ArrayList<JDBinomialNode>> treeNodes = tree.getMasterTree();
+		for (ArrayList<JDBinomialNode> step : treeNodes) {
+			for (JDBinomialNode node : step) {
+				node.setChildrenStockPrice();
+			}
+		}
 		
-		return 0.0;
+		// 4) Generate Derivative (CB) price based on the generated Equity prices
+		// Notice we are iterating backwards
+		for(int step = treeNodes.size() - 1; step >= 0; step--){
+			  for (JDBinomialNode node : treeNodes.get(step)) {
+				double value = node.getConvertibleValue();
+				System.out.println("value="+value+"\n node info:\n"+node);
+			}
+		}
+		setPrice(tree.getRootNode().getConvertibleValue());
+		return  getPrice(); // Price of the Convertible Bond
 	}
 	
 	public BinomialTree getTree() {
