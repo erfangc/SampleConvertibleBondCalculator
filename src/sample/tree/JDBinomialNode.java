@@ -8,12 +8,12 @@ public class JDBinomialNode extends Node {
 	@Override
 	public String toString() {
 		return "JDBinomialNode [upProb=" + upProb + ", dnProb=" + dnProb
-				+ ", nodeEquityValue=" + stockPrice + ", hazardRate="
-				+ hazardRate + ", bondValue=" + bondValue + ", state=" + state
-				+ ", getStep()=" + getStep() + ", getId()=" + getNodeNumber() + "]";
+				+ ", stockPrice=" + stockPrice + ", hazardRate=" + hazardRate
+				+ ", bondValue=" + bondValue + ", contValue=" + contValue
+				+ ", exerciseValue=" + exerciseValue + ", state=" + state + "]";
 	}
 
-	private double upProb, dnProb, stockPrice, hazardRate, bondValue;
+	private double upProb, dnProb, stockPrice, hazardRate, bondValue, contValue, exerciseValue;
 	private NodeState state;
 	
 	public enum NodeState {
@@ -76,6 +76,22 @@ public class JDBinomialNode extends Node {
 
 	public void setState(NodeState state) {
 		this.state = state;
+	}
+
+	public double getExerciseValue() {
+		return exerciseValue;
+	}
+
+	public void setExerciseValue(double exerciseValue) {
+		this.exerciseValue = exerciseValue;
+	}
+
+	public double getContValue() {
+		return contValue;
+	}
+
+	public void setContValue(double contValue) {
+		this.contValue = contValue;
 	}
 	
 	

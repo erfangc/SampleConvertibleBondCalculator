@@ -7,15 +7,17 @@ public class ConvertibleBond {
 	private double convertRatio;
 	private double notionalAmt;
 	private Date maturity;
+	private double yearsToMaturity;
 	private double coupon;
 	private Stock underlyingStock;
 	
 	public ConvertibleBond(double convertRatio, double notionalAmt,
-			Date maturity, double coupon, Stock underlyingStock) {
+			Date maturity, double yrsToMat , double coupon, Stock underlyingStock) {
 		this.convertRatio = convertRatio;
 		this.notionalAmt = notionalAmt;
 		this.maturity = maturity;
 		this.coupon = coupon;
+		this.yearsToMaturity = yrsToMat;
 		this.underlyingStock = underlyingStock;
 	}
 
@@ -73,6 +75,14 @@ public class ConvertibleBond {
 				+ ", notionalAmt=" + notionalAmt + ", maturity=" + maturity
 				+ ", coupon=" + coupon + ", underlyingStock=" + underlyingStock
 				+ "]";
+	}
+
+	public double getYearsToMaturity() {
+		return yearsToMaturity;
+	}
+
+	public void setYearsToMaturity(double yearsToMaturity) {
+		this.yearsToMaturity = yearsToMaturity;
 	}	
 	
 

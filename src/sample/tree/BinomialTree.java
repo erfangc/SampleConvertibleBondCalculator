@@ -17,6 +17,7 @@ public class BinomialTree {
 	private ArrayList<ArrayList<JDBinomialNode>> tree; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
 	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
 	private JDBinomialNode rootNode;                         // Entry point on the tree
+	private int numSteps; 
 	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
@@ -73,6 +74,7 @@ public class BinomialTree {
 	
 	public BinomialTree(int nSteps) {
 		super();
+		this.numSteps = nSteps;
 		createEmptyTree(nSteps);
 	}
 
@@ -109,6 +111,14 @@ public class BinomialTree {
 
 	public void setRootNode(JDBinomialNode rootNode) {
 		this.rootNode = rootNode;
+	}
+
+	public int getNumSteps() {
+		return numSteps;
+	}
+
+	public void setNumSteps(int numSteps) {
+		this.numSteps = numSteps;
 	}
 	
 }

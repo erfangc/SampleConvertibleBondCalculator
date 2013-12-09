@@ -14,7 +14,7 @@ public class Driver {
 		
 		@SuppressWarnings("deprecation")
 		// conv ratio = 15, matures 12/31/15, cpn = 5
-		ConvertibleBond cb = new ConvertibleBond(15,1000, new Date("12/31/2015"), 5.0, stock);
+		ConvertibleBond cb = new ConvertibleBond(15,1000, new Date("12/31/2015"), 2 , 5.0, stock);
 		
 		System.out.println(cb);
 	}
