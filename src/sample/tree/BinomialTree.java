@@ -52,6 +52,7 @@ public class BinomialTree {
 				nodesCurrentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null, null, n, i);
 				nodesCurrentStep[i].setStep(n);
 				nodesCurrentStep[i].setNodeNumber(i);
+				nodesCurrentStep[i].setMyTree(this);
 			}
 			
 			nodes[n] = nodesCurrentStep;
@@ -88,7 +89,7 @@ public class BinomialTree {
 	 * @param parents
 	 */
 	public void mapChildren(JDBinomialNode[] children, JDBinomialNode[] parents) {
-		// TODO Implement
+		// TODO Implement this ... Map all the Nodes here to their Children
 	}
 
 	// Getter and Setters

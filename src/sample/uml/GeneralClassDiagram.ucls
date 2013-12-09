@@ -4,7 +4,7 @@
   <class id="1" language="java" name="sample.instrument.ConvertibleBond" project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/instrument/ConvertibleBond.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="441" width="305" x="407" y="37"/>    
+    <position height="441" width="305" x="41" y="302"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -13,7 +13,7 @@
   </class>  
   <class id="2" language="java" name="sample.instrument.Stock" project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/instrument/Stock.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="261" width="164" x="189" y="536"/>    
+    <position height="261" width="164" x="41" y="1071"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -22,44 +22,44 @@
   </class>  
   <class id="3" language="java" name="sample.tree.BinomialTree" project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/tree/BinomialTree.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="317" x="752" y="536"/>    
+    <position height="729" width="317" x="765" y="302"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="sample.tree.JDTreeUntil" project="SampleConvertibleBondCalculator" 
-    file="/SampleConvertibleBondCalculator/src/sample/tree/JDTreeUntil.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="316" x="51" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="sample.tree.Node" project="SampleConvertibleBondCalculator" 
-    file="/SampleConvertibleBondCalculator/src/sample/tree/Node.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="477" width="319" x="393" y="536"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <enumeration id="6" language="java" name="sample.tree.JDBinomialNode.NodeState" 
+  <enumeration id="4" language="java" name="sample.tree.JDBinomialNode.NodeState" 
     project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/tree/JDBinomialNode.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="144" x="705" y="1678"/>    
+    <position height="171" width="144" x="765" y="1624"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="7" language="java" name="sample.tree.JDBinomialNode" project="SampleConvertibleBondCalculator" 
+  <class id="5" language="java" name="sample.tree.JDBinomialNode" project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/tree/JDBinomialNode.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="585" width="370" x="705" y="1053"/>    
+    <position height="513" width="370" x="765" y="1071"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="sample.tree.JDTreeUntil" project="SampleConvertibleBondCalculator" 
+    file="/SampleConvertibleBondCalculator/src/sample/tree/JDTreeUntil.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="346" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="sample.tree.Node" project="SampleConvertibleBondCalculator" 
+    file="/SampleConvertibleBondCalculator/src/sample/tree/Node.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="441" width="319" x="386" y="302"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -70,7 +70,7 @@
     project="SampleConvertibleBondCalculator" 
     file="/SampleConvertibleBondCalculator/src/sample/tree/calculators/TreeAnalyticProcessor.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="459" width="323" x="752" y="37"/>    
+    <position height="225" width="259" x="427" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -78,61 +78,85 @@
     </display>  
   </class>  
   <association id="9">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="10" name="state"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="12">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="13" name="underlyingStock"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="15">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="16" name="terminalNodes">        
-        <position height="18" width="76" x="1102" y="544"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="1154" y="533"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="18">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="19" name="tree"/>      
-      <multiplicity id="20" minimum="0" maximum="1"/>    
+      <attribute id="10" name="tree"/>      
+      <multiplicity id="11" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="21">    
+  <association id="12">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="22" name="rootNode">        
-        <position height="18" width="52" x="1129" y="518"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="16" width="23" x="1160" y="506"/>      
-      </multiplicity>    
+      <attribute id="13" name="rootNode"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="15">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <association id="16">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="17" name="cb"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="20" name="childDn"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="24">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="5"/>  
+  <generalization id="22">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="7"/>  
   </generalization>  
+  <association id="23">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="24" name="state"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="27" name="terminalNodes"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="30" name="childUp"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="33" name="myTree"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="36" name="underlyingStock"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

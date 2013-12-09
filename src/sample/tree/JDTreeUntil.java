@@ -15,9 +15,9 @@ public class JDTreeUntil {
 	 * @param cb The Convertible Bond being Valued
 	 * @return List of Args to Be passed to the Lattice
 	 */
-	public static Map<String, Object> resolveJDTreeParams(ConvertibleBond cb) {
-		// TODO Actually Implement This Method
-		return new HashMap<String, Object>(); 
+	public static BinomialTree initializeBinomialTreeWithParams(ConvertibleBond cb, int treeSteps) {
+		return null;
+		// TODO Actually Implement This Method 
 	}
 	
 }
