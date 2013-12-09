@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class BinomialTree {
 
-	private ArrayList<ArrayList<JDBinomialNode>> masterTree; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
+	private ArrayList<ArrayList<JDBinomialNode>> tree; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
 	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
 	private JDBinomialNode rootNode;                         // Entry point on the tree
 	
@@ -22,7 +22,7 @@ public class BinomialTree {
 	public void createEmptyTree(int nSteps) {
 		
 		// Reset All
-		masterTree = null;
+		tree = null;
 		terminalNodes = null;
 		rootNode = null;
 		
@@ -34,8 +34,8 @@ public class BinomialTree {
 		nodes[0] = rootWrapper;
 		
 		// Parallel ArrayList Object
-		masterTree = new ArrayList<ArrayList<JDBinomialNode>>();
-		masterTree.add((ArrayList<JDBinomialNode>) Arrays.asList(nodes[0]));
+		tree = new ArrayList<ArrayList<JDBinomialNode>>();
+		tree.add((ArrayList<JDBinomialNode>) Arrays.asList(nodes[0]));
 		
 		for (int n = 1; n < nSteps; n++) {
 			
@@ -60,7 +60,7 @@ public class BinomialTree {
 			
 			// Convert current step to ArrayList to be added to masterTree
 			ArrayList<JDBinomialNode> asArrList = (ArrayList<JDBinomialNode>) Arrays.asList(nodesCurrentStep);
-			masterTree.add(asArrList);
+			tree.add(asArrList);
 			
 		}
 		
@@ -88,11 +88,11 @@ public class BinomialTree {
 
 	// Getter/Setters
 	public ArrayList<ArrayList<JDBinomialNode>> getMasterTree() {
-		return masterTree;
+		return tree;
 	}
 
 	public void setMasterTree(ArrayList<ArrayList<JDBinomialNode>> masterTree) {
-		this.masterTree = masterTree;
+		this.tree = masterTree;
 	}
 
 	public ArrayList<JDBinomialNode> getTerminalNodes() {
