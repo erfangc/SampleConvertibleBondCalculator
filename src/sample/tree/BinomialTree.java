@@ -19,6 +19,9 @@ public class BinomialTree {
 	private JDBinomialNode rootNode;                         // Entry point on the tree
 	private int numSteps; 
 	
+	// Shared Parameters for all nodes, from which the node specific fields are determined
+	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove;
+	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
 		
@@ -27,7 +30,7 @@ public class BinomialTree {
 		terminalNodes = null;
 		rootNode = null;
 		
-		rootNode = new JDBinomialNode(true, false, null, null);
+		rootNode = new JDBinomialNode(true,false,new HashMap<String, Object>(),null, null, 0, 0);
 		
 		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps-1][];
 		JDBinomialNode[] rootWrapper = new JDBinomialNode[1];
@@ -46,7 +49,7 @@ public class BinomialTree {
 			// # of Nodes on a Given Step in the Tree Correspond to
 			// the Current Step n/nSteps
 			for (int i = 0; i < n; i++) {
-				nodesCurrentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null);
+				nodesCurrentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null, null, n, i);
 				nodesCurrentStep[i].setStep(n);
 				nodesCurrentStep[i].setNodeNumber(i);
 			}
@@ -88,7 +91,7 @@ public class BinomialTree {
 		// TODO Implement
 	}
 
-	// Getter/Setters
+	// Getter and Setters
 	public ArrayList<ArrayList<JDBinomialNode>> getMasterTree() {
 		return tree;
 	}
@@ -119,6 +122,70 @@ public class BinomialTree {
 
 	public void setNumSteps(int numSteps) {
 		this.numSteps = numSteps;
+	}
+
+	public ArrayList<ArrayList<JDBinomialNode>> getTree() {
+		return tree;
+	}
+
+	public void setTree(ArrayList<ArrayList<JDBinomialNode>> tree) {
+		this.tree = tree;
+	}
+
+	public double getRf() {
+		return rf;
+	}
+
+	public void setRf(double rf) {
+		this.rf = rf;
+	}
+
+	public double getDivYld() {
+		return divYld;
+	}
+
+	public void setDivYld(double divYld) {
+		this.divYld = divYld;
+	}
+
+	public double getVol() {
+		return vol;
+	}
+
+	public void setVol(double vol) {
+		this.vol = vol;
+	}
+
+	public double getUpProb() {
+		return upProb;
+	}
+
+	public void setUpProb(double upProb) {
+		this.upProb = upProb;
+	}
+
+	public double getDnProb() {
+		return dnProb;
+	}
+
+	public void setDnProb(double dnProb) {
+		this.dnProb = dnProb;
+	}
+
+	public double getUpMove() {
+		return upMove;
+	}
+
+	public void setUpMove(double upMove) {
+		this.upMove = upMove;
+	}
+
+	public double getDnMove() {
+		return dnMove;
+	}
+
+	public void setDnMove(double dnMove) {
+		this.dnMove = dnMove;
 	}
 	
 }

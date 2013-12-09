@@ -1,19 +1,11 @@
 package sample.tree;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class JDBinomialNode extends Node {
-
-	@Override
-	public String toString() {
-		return "JDBinomialNode [upProb=" + upProb + ", dnProb=" + dnProb
-				+ ", stockPrice=" + stockPrice + ", hazardRate=" + hazardRate
-				+ ", bondValue=" + bondValue + ", contValue=" + contValue
-				+ ", exerciseValue=" + exerciseValue + ", state=" + state + "]";
-	}
-
-	private double upProb, dnProb, stockPrice, hazardRate, bondValue, contValue, exerciseValue;
+	
+	// Private Fields that Store Crucial Node level Valuation Ingredients
+	private double stockPrice, hazardRate, bondPV, contValue, exerciseValue, nodeDerivValue;
 	private NodeState state;
 	
 	public enum NodeState {
@@ -23,34 +15,23 @@ public class JDBinomialNode extends Node {
 		MATURED,
 		DEFAULTED
 	}
-	
+
 	public JDBinomialNode(boolean isRoot, boolean isTerminal,
-			Map<String, Object> data, ArrayList<Node> children) {
-		super(isRoot, isTerminal, data, children);
+			Map<String, Object> data, Node childUp, Node childDn, int step,
+			int nodeNumber) {
+		super(isRoot, isTerminal, data, childUp, childDn, step, nodeNumber);
 	}
-
-	// Setters and Getters
-	public double getUpProb() {
-		return upProb;
+	
+	// Simple Equity-Credit link: Lamda = 1000 / S^2
+	public double getEquityLinkedHazardRate() {
+		return 1000/Math.pow(getStockPrice(), 2);
 	}
-
-	public void setUpProb(double upProb) {
-		this.upProb = upProb;
-	}
-
-	public double getDnProb() {
-		return dnProb;
-	}
-
-	public void setDnProb(double dnProb) {
-		this.dnProb = dnProb;
-	}
-
-	public double getNodeEquityValue() {
+	
+	public double getStockPrice() {
 		return stockPrice;
 	}
 
-	public void setNodeEquityValue(double nodeEquityValue) {
+	public void setStockPrice(double nodeEquityValue) {
 		this.stockPrice = nodeEquityValue;
 	}
 
@@ -62,12 +43,12 @@ public class JDBinomialNode extends Node {
 		this.hazardRate = hazardRate;
 	}
 
-	public double getBondValue() {
-		return bondValue;
+	public double getBondPV() {
+		return bondPV;
 	}
 
-	public void setBondValue(double bondValue) {
-		this.bondValue = bondValue;
+	public void setBondPV(double bondValue) {
+		this.bondPV = bondValue;
 	}
 
 	public NodeState getState() {
@@ -92,6 +73,14 @@ public class JDBinomialNode extends Node {
 
 	public void setContValue(double contValue) {
 		this.contValue = contValue;
+	}
+
+	public double getNodeDerivValue() {
+		return nodeDerivValue;
+	}
+
+	public void setNodeDerivValue(double nodeDerivValue) {
+		this.nodeDerivValue = nodeDerivValue;
 	}
 	
 	

@@ -1,7 +1,5 @@
 package sample.tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
  
@@ -15,24 +13,27 @@ import java.util.Map;
  */
 public class Node implements Comparable<Node>    
 {
-	private boolean isRoot;
-	private boolean isTerminal;
+	private boolean isRoot, isTerminal;
 	
 	private Map<String, Object> data;
-	private ArrayList<Node> children;
-	private Node defaultNode;
+	private Node childUp, childDn;
 	
 	private int step, nodeNumber;
 
 	public Node(boolean isRoot, boolean isTerminal, Map<String, Object> data,
-			ArrayList<Node> children) {
+			Node childUp, Node childDn, int step, int nodeNumber) {
 		this.isRoot = isRoot;
 		this.isTerminal = isTerminal;
 		this.data = data;
-		this.children = children;
-		
-		defaultNode = new Node(false, false, new HashMap<String, Object>(), null);
-		
+		this.childUp = childUp;
+		this.childDn = childDn;
+		this.step = step;
+		this.nodeNumber = nodeNumber;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		return 0;
 	}
 
 	public boolean isRoot() {
@@ -59,20 +60,20 @@ public class Node implements Comparable<Node>
 		this.data = data;
 	}
 
-	public ArrayList<Node> getChildren() {
-		return children;
-	}
-	
-	public Node getDefaultNode() {
-		return defaultNode;
+	public Node getChildUp() {
+		return childUp;
 	}
 
-	public void setDefaultNode(Node defaultNode) {
-		this.defaultNode = defaultNode;
+	public void setChildUp(Node childUp) {
+		this.childUp = childUp;
 	}
 
-	public void setChildren(ArrayList<Node> children) {
-		this.children = children;
+	public Node getChildDn() {
+		return childDn;
+	}
+
+	public void setChildDn(Node childDn) {
+		this.childDn = childDn;
 	}
 
 	public int getStep() {
@@ -87,42 +88,8 @@ public class Node implements Comparable<Node>
 		return nodeNumber;
 	}
 
-	public void setNodeNumber(int id) {
-		this.nodeNumber = id;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + nodeNumber;
-		result = prime * result + step;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Node other = (Node) obj;
-		if (nodeNumber != other.nodeNumber)
-			return false;
-		if (step != other.step)
-			return false;
-		return true;
-	}
-
-	@Override
-	public int compareTo(Node o) {
-		
-		if (this.getNodeNumber() == o.getNodeNumber())
-			return 0;
-		
-		return ( o.getNodeNumber() > 1 ? 1 : -1 );
+	public void setNodeNumber(int nodeNumber) {
+		this.nodeNumber = nodeNumber;
 	}
 	
 }
