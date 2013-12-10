@@ -1,9 +1,13 @@
 package sample.tree;
 
+import org.apache.log4j.Logger;
+
+import sample.general.Driver;
 import sample.instrument.ConvertibleBond;
 
 public class JDTreeUntil {
 
+	public static final Logger LOG = Logger.getLogger(Driver.class);
 	/**
 	 * 
 	 * Resolve some basic parameters in the convert Jump-diffusion model and transform these into
@@ -13,7 +17,7 @@ public class JDTreeUntil {
 	 * @return List of Args to Be passed to the Lattice
 	 */
 	public static BinomialTree initializeBinomialTreeWithParams(ConvertibleBond cb, int treeSteps) {
-		
+				
 		BinomialTree tree = new BinomialTree(treeSteps);
 		
 		double rf = 0.0;
@@ -38,6 +42,8 @@ public class JDTreeUntil {
 		tree.setDnProb(dnProb);
 		
 		tree.setCb(cb);
+		
+		System.out.println(tree);
 		
 		return tree;
 	}

@@ -3,6 +3,9 @@ package sample.tree;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
+import sample.general.Driver;
 import sample.instrument.ConvertibleBond;
 
 /**
@@ -15,11 +18,21 @@ import sample.instrument.ConvertibleBond;
  */
 public class BinomialTree {
 
+	public static final Logger LOG = Logger.getLogger(Driver.class);
+	
 	private ArrayList<ArrayList<JDBinomialNode>> nodesAL; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
 	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
 	private JDBinomialNode rootNode;                         // Entry point on the tree
 	private int numSteps; 
 	private ConvertibleBond cb;
+	
+	public enum GraphicType {
+		STOCK_PRICE,
+		CONTINUATION_VALUE,
+		CONVERTIBLE_VALUE,
+		EXERCISE_VALUE,
+		CONVERSION_VALUE;
+	}
 	
 	// Shared Parameters for all nodes, from which the node specific fields are determined
 	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt;
@@ -27,7 +40,7 @@ public class BinomialTree {
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
 		
-		System.out.println("Creating Tree with "+nSteps+" Steps");
+		LOG.info("Creating Tree with "+nSteps+" Steps");
 		
 		// Reset All
 		nodesAL = null;
@@ -35,7 +48,7 @@ public class BinomialTree {
 		rootNode = null;
 		
 		rootNode = new JDBinomialNode(true,false,new HashMap<String, Object>(),null, null, 0, 0);
-		
+		rootNode.setMyTree(this);
 		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps][];		
 		JDBinomialNode[] rootWrapper = new JDBinomialNode[1];
 		rootWrapper[0] = rootNode;
@@ -101,7 +114,91 @@ public class BinomialTree {
 			parents[i].setChildDn(children[i+1]);
 		}
 	}
+    
+	@Override
+	public String toString() {
+		String str =  "BinomialTree [numSteps=" + numSteps + ", rf=" + rf
+				+ ", divYld=" + divYld + ", vol=" + vol + ", upProb=" + upProb
+				+ ", dnProb=" + dnProb + ", upMove=" + upMove + ", dnMove="
+				+ dnMove + ", dt=" + dt + "]";
 
+		return str;
+	}
+
+	// Output Methods
+	public String getGraphic(GraphicType type) {    
+		
+		String graphic = "\n"+getGraphicLabel(type)+"\n";
+		
+		// Create an Array Big Enough to Hold the Entire Tree
+		Object[][] displayObject = new Object[2*getNumSteps()-1][getNumSteps()]; 
+		
+		for (ArrayList<JDBinomialNode> step : nodesAL) {
+			for (JDBinomialNode node : step) {
+				int x = node.getStep(),
+					y = ( getNumSteps() -1 ) - node.getStep() + 2 * node.getNodeNumber(); // Figure out how many cells in displayObject to skip
+				
+				double data = 0.0;
+				// Determine Data to Print
+				switch (type) {
+				case EXERCISE_VALUE:
+					data = node.getExerciseValue();
+					break;
+				case CONTINUATION_VALUE:
+					data = node.getContinueValue();
+					break;
+				case CONVERTIBLE_VALUE:
+					data = node.getConvertibleValue();
+					break;
+				case STOCK_PRICE:
+					data = node.getStockPrice();
+					break;
+				default:
+					data = (double) node.getNodeNumber();
+					break;
+				}
+				
+				displayObject[y][x] = data;
+			}
+		}
+		
+		for (Object[] row : displayObject) {
+			String rowStr = "";
+			for (Object cell : row) {
+				if (cell == null) {
+					rowStr += String.format("%-13s", " ");
+				} else {
+					rowStr += String.format("%13s", String.format("%-10.2f", cell));
+				}		
+			}
+			graphic += rowStr + "\n";
+		}
+		
+		return graphic;
+	}
+	
+	private String getGraphicLabel(GraphicType type) {
+		String label = "";
+		switch (type) {
+			case EXERCISE_VALUE:
+				label = "Exercise Value";
+				break;
+			case CONTINUATION_VALUE:
+				label = "Continuation Value";
+				break;
+			case CONVERTIBLE_VALUE:
+				label = "Convertible Value";
+				break;
+			case STOCK_PRICE:
+				label = "Stock Prices";
+				break;
+			default:
+				label = "Node Number";
+				break;
+		}
+		return label;
+	}
+	
 	// Getter and Setters
 	public ArrayList<ArrayList<JDBinomialNode>> getMasterTree() {
 		return nodesAL;

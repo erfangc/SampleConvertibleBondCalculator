@@ -5,10 +5,14 @@ package sample.tree.calculators;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import sample.general.Driver;
 import sample.instrument.ConvertibleBond;
 import sample.tree.BinomialTree;
 import sample.tree.JDBinomialNode;
 import sample.tree.JDTreeUntil;
+import sample.tree.BinomialTree.GraphicType;
 
 /**
  * This is a command class that will call upon nodes in a Binomial tree to populate values
@@ -21,6 +25,8 @@ import sample.tree.JDTreeUntil;
  */
 public class TreeAnalyticProcessor {
 
+	public static final Logger LOG = Logger.getLogger(Driver.class);
+	
 	private BinomialTree tree;
 	private ConvertibleBond cb;
 	private double price = Double.NaN; // Output
@@ -46,6 +52,7 @@ public class TreeAnalyticProcessor {
 		tree = JDTreeUntil.initializeBinomialTreeWithParams(cb, 5);
 		
 		// 3) Generate Equity Process for each node
+		tree.getRootNode().setStockPrice(cb.getUnderlyingStock().getCurrentPrice());
 		ArrayList<ArrayList<JDBinomialNode>> treeNodes = tree.getMasterTree();
 		for (ArrayList<JDBinomialNode> step : treeNodes) {
 			for (JDBinomialNode node : step) {
@@ -57,11 +64,16 @@ public class TreeAnalyticProcessor {
 		// Notice we are iterating backwards
 		for(int step = treeNodes.size() - 1; step >= 0; step--){
 			  for (JDBinomialNode node : treeNodes.get(step)) {
-				double value = node.getConvertibleValue();
-				System.out.println("value="+value+"\n node info:\n"+node);
+				node.getConvertibleValue();
 			}
 		}
 		setPrice(tree.getRootNode().getConvertibleValue());
+		
+		LOG.info(tree.getGraphic(GraphicType.STOCK_PRICE));
+		LOG.info(tree.getGraphic(GraphicType.CONTINUATION_VALUE));
+		LOG.info(tree.getGraphic(GraphicType.EXERCISE_VALUE));
+		LOG.info(tree.getGraphic(GraphicType.CONVERTIBLE_VALUE));		
+		
 		return  getPrice(); // Price of the Convertible Bond
 	}
 	

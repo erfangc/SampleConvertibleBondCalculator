@@ -11,7 +11,7 @@ public class JDBinomialNode extends Node {
 	}
 
 	// Private Fields that Store Crucial Node level Valuation Ingredients
-	private double stockPrice, hazardRate, bondPV, continueValue, exerciseValue, convertibleValue = Double.NaN;
+	private double stockPrice = Double.NaN, hazardRate = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, exerciseValue = Double.NaN, convertibleValue = Double.NaN;
 	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
 		
 	/*
@@ -30,12 +30,13 @@ public class JDBinomialNode extends Node {
 		
 		JDBinomialNode upChild = (JDBinomialNode) getChildUp();
 		JDBinomialNode dnChild = (JDBinomialNode) getChildDn();
+
+		if (upChild != null && Double.isNaN(upChild.getStockPrice()))
+			upChild.setStockPrice(getStockPrice() * getMyTree().getUpMove());
 		
-		if (upChild != null && upChild.getStockPrice() == Double.NaN)
-			upChild.setStockPrice(getStockPrice() * myTree.getUpMove());
+		if (dnChild != null && Double.isNaN(dnChild.getStockPrice()))
+			dnChild.setStockPrice(getStockPrice() * getMyTree().getDnMove());		
 		
-		if (dnChild != null && dnChild.getStockPrice() == Double.NaN)
-			dnChild.setStockPrice(getStockPrice() * myTree.getDnMove());
 		
 	}
 	
@@ -92,7 +93,7 @@ public class JDBinomialNode extends Node {
 	}
 
 	public double getHazardRate() {
-		if (hazardRate == Double.NaN)
+		if (Double.isNaN(hazardRate))
 			setHazardRate();
 		return hazardRate;
 	}
@@ -110,7 +111,7 @@ public class JDBinomialNode extends Node {
 	}
 
 	public double getExerciseValue() {
-		if (exerciseValue == Double.NaN)
+		if (Double.isNaN(exerciseValue))
 			computeExerciseValue();
 		return exerciseValue;
 	}
@@ -120,7 +121,7 @@ public class JDBinomialNode extends Node {
 	}
 
 	public double getContinueValue() {
-		if (continueValue == Double.NaN)
+		if (Double.isNaN(continueValue))
 			computeContValue();
 		return continueValue;
 	}
@@ -130,7 +131,7 @@ public class JDBinomialNode extends Node {
 	}
 
 	public double getConvertibleValue() {
-		if (convertibleValue == Double.NaN)
+		if (Double.isNaN(convertibleValue))
 			computeNodeDerivValue();
 		return convertibleValue;
 	}
@@ -145,6 +146,14 @@ public class JDBinomialNode extends Node {
 
 	public void setMyTree(BinomialTree myTree) {
 		this.myTree = myTree;
+	}
+
+	@Override
+	public String toString() {
+		return "JDBinomialNode [stockPrice=" + stockPrice + ", continueValue="
+				+ continueValue + ", exerciseValue=" + exerciseValue
+				+ ", convertibleValue=" + convertibleValue + ", getStep()="
+				+ getStep() + ", getNodeNumber()=" + getNodeNumber() + "]";
 	}
 	
 	
