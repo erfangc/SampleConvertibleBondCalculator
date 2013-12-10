@@ -35,7 +35,7 @@ public class Driver {
 		LOG.info(p.getTree().getGraphic(GraphicType.HAZARD_RATE));
 		
 		// Calibration Test
-		double px = 109.54;
+		double px = 125.54;
 		LOG.info("Assuming Price="+px);
 		double calibrResult = p.calibrate(px);
 		LOG.info("Calibrated Constant to: "+calibrResult);		

@@ -36,10 +36,10 @@ public class JDBinomialNode extends Node {
 		JDBinomialNode upChild = (JDBinomialNode) getChildUp();
 		JDBinomialNode dnChild = (JDBinomialNode) getChildDn();
 
-		if (upChild != null && Double.isNaN(upChild.getStockPrice()))
+		if (upChild != null)
 			upChild.setStockPrice(getStockPrice() * getMyTree().getUpMove());
 		
-		if (dnChild != null && Double.isNaN(dnChild.getStockPrice()))
+		if (dnChild != null)
 			dnChild.setStockPrice(getStockPrice() * getMyTree().getDnMove());		
 		
 	}
