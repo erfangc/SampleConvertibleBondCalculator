@@ -29,13 +29,15 @@ public class BinomialTree {
 	public enum GraphicType {
 		STOCK_PRICE,
 		CONTINUATION_VALUE,
+		DEFAULT_PROBABILITY,
+		HAZARD_RATE,
 		CONVERTIBLE_VALUE,
 		EXERCISE_VALUE,
 		CONVERSION_VALUE;
 	}
 	
 	// Shared Parameters for all nodes, from which the node specific fields are determined
-	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt;
+	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt, hazardRateCalibrCnst;
 	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
@@ -117,18 +119,22 @@ public class BinomialTree {
     
 	@Override
 	public String toString() {
-		String str =  "BinomialTree [numSteps=" + numSteps + ", rf=" + rf
-				+ ", divYld=" + divYld + ", vol=" + vol + ", upProb=" + upProb
-				+ ", dnProb=" + dnProb + ", upMove=" + upMove + ", dnMove="
-				+ dnMove + ", dt=" + dt + "]";
-
-		return str;
+		return "BinomialTree [numSteps=" + numSteps + ", cb=" + cb + ", rf="
+				+ rf + ", divYld=" + divYld + ", vol=" + vol + ", upProb="
+				+ upProb + ", dnProb=" + dnProb + ", upMove=" + upMove
+				+ ", dnMove=" + dnMove + ", dt=" + dt
+				+ ", hazardRateCalibrCnst=" + hazardRateCalibrCnst + "]";
 	}
 
 	// Output Methods
 	public String getGraphic(GraphicType type) {    
 		
 		String graphic = "\n"+getGraphicLabel(type)+"\n";
+		
+		if (getNumSteps() >= 25) {
+			graphic += "Tree Display Suppressed - Too many Nodes\n";
+			return graphic;
+		}
 		
 		// Create an Array Big Enough to Hold the Entire Tree
 		Object[][] displayObject = new Object[2*getNumSteps()-1][getNumSteps()]; 
@@ -152,6 +158,12 @@ public class BinomialTree {
 					break;
 				case STOCK_PRICE:
 					data = node.getStockPrice();
+					break;
+				case DEFAULT_PROBABILITY:
+					data = node.getDefaultProb();
+					break;
+				case HAZARD_RATE:
+					data = node.getHazardRate();
 					break;
 				default:
 					data = (double) node.getNodeNumber();
@@ -191,6 +203,12 @@ public class BinomialTree {
 				break;
 			case STOCK_PRICE:
 				label = "Stock Prices";
+				break;
+			case DEFAULT_PROBABILITY:
+				label = "Default Probabilities";
+				break;
+			case HAZARD_RATE:
+				label = "Hazard Rate";
 				break;
 			default:
 				label = "Node Number";
@@ -310,6 +328,14 @@ public class BinomialTree {
 
 	public void setCb(ConvertibleBond cb) {
 		this.cb = cb;
+	}
+
+	public double getHazardRateCalibrCnst() {
+		return hazardRateCalibrCnst;
+	}
+
+	public void setHazardRateCalibrCnst(double hazardRateCalibrCnst) {
+		this.hazardRateCalibrCnst = hazardRateCalibrCnst;
 	}
 	
 }

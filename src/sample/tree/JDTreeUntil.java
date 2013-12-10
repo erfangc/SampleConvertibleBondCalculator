@@ -8,15 +8,17 @@ import sample.instrument.ConvertibleBond;
 public class JDTreeUntil {
 
 	public static final Logger LOG = Logger.getLogger(Driver.class);
+	
 	/**
 	 * 
 	 * Resolve some basic parameters in the convert Jump-diffusion model and transform these into
 	 * lattice friendly values to be consumed by the tree itself and the tree process
 	 * 
 	 * @param cb The Convertible Bond being Valued
-	 * @return List of Args to Be passed to the Lattice
+	 * @param hazardInit The initial hazard rate constant = default is 1000
+	 * @return List of arguments to Be passed to the Lattice
 	 */
-	public static BinomialTree initializeBinomialTreeWithParams(ConvertibleBond cb, int treeSteps) {
+	public static BinomialTree initializeBinomialTreeWithParams(ConvertibleBond cb, int treeSteps, double hazardInit) {
 				
 		BinomialTree tree = new BinomialTree(treeSteps);
 		
@@ -35,6 +37,7 @@ public class JDTreeUntil {
 		tree.setDivYld(divYld);
 		tree.setVol(vol);
 		tree.setDt(dt);
+		tree.setHazardRateCalibrCnst(hazardInit);
 		
 		tree.setUpMove(upMove);
 		tree.setDnMove(dnMove);
@@ -43,7 +46,7 @@ public class JDTreeUntil {
 		
 		tree.setCb(cb);
 		
-		System.out.println(tree);
+		LOG.info(tree);
 		
 		return tree;
 	}

@@ -4,23 +4,28 @@ import java.util.Map;
 
 public class JDBinomialNode extends Node {
 	
+	// Private Fields that Store Crucial Node level Valuation Ingredients
+	private double stockPrice = Double.NaN, bondPV = Double.NaN;
+	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
+
 	public JDBinomialNode(boolean isRoot, boolean isTerminal,
 			Map<String, Object> data, Node childUp, Node childDn, int step,
 			int nodeNumber) {
 		super(isRoot, isTerminal, data, childUp, childDn, step, nodeNumber);
 	}
-
-	// Private Fields that Store Crucial Node level Valuation Ingredients
-	private double stockPrice = Double.NaN, hazardRate = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, exerciseValue = Double.NaN, convertibleValue = Double.NaN;
-	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
-		
+	
 	/*
 	 * Calculation Functions
 	 */
 	
-	// Simple Equity-Credit link: Lambda = 1000 / S^2
-	public void setHazardRate() {
-		setHazardRate(1000/Math.pow(getStockPrice(), 2));
+	// Simple Equity-Credit link: Lambda = c / S^2
+	public double getHazardRate() {
+		return(getMyTree().getHazardRateCalibrCnst()/Math.pow(getStockPrice(), 2));
+	}
+	
+	public double getDefaultProb() {
+		double dt = myTree.getDt();
+		return(1-Math.exp(-1*getHazardRate()*dt));
 	}
 	
 	public void setChildrenStockPrice() {
@@ -37,15 +42,13 @@ public class JDBinomialNode extends Node {
 		if (dnChild != null && Double.isNaN(dnChild.getStockPrice()))
 			dnChild.setStockPrice(getStockPrice() * getMyTree().getDnMove());		
 		
-		
 	}
 	
-	public void computeContValue() {
+	public double getContinueValue() {
 		
 		// Continuation Value at Terminal Nodes Should be Either Par or Conversion Value or Defaulted Recovery Value
 		if (isTerminal()) {
-			setContinueValue(100);
-			return;
+			return(100);
 		}
 		
 		// Average of 3 Possible Future States
@@ -59,29 +62,28 @@ public class JDBinomialNode extends Node {
 		double valueSurvival = Math.exp(-1 * (rf-divYld) * dt) *
 								(upProb * ((JDBinomialNode) getChildUp()).getConvertibleValue() 
 										+ dnProb * ((JDBinomialNode) getChildDn()).getConvertibleValue());
-		double defaultProb = Math.exp(getHazardRate()*dt);
+		double defaultProb = getDefaultProb();
 		double valueGivenDefault = 30;
 		
 		value = valueSurvival * (1-defaultProb) + valueGivenDefault * (defaultProb);
 		
-		setContinueValue(value);
+		return(value);
 		
 	}
 	
-	public void computeExerciseValue() {
+	public double getExerciseValue() {
 		
 		double convertRatio = myTree.getCb().getConvertRatio();
 		double convertNotional = myTree.getCb().getNotionalAmt();
-		double conversionPrice = convertNotional / convertRatio;
 		
 		double numberShrsPer100 = convertRatio / convertNotional * 100;
 		
-		setExerciseValue(Math.max( (getStockPrice() - conversionPrice) * numberShrsPer100, 0));		
+		return(Math.max( getStockPrice() * numberShrsPer100, 0));		
 		
 	}
 	
-	public void computeNodeDerivValue() {
-		setConvertibleValue(Math.max(getExerciseValue(), getContinueValue()));
+	public double getConvertibleValue() {
+		return(Math.max(getExerciseValue(), getContinueValue()));
 	}
 	
 	public double getStockPrice() {
@@ -92,52 +94,12 @@ public class JDBinomialNode extends Node {
 		this.stockPrice = px;
 	}
 
-	public double getHazardRate() {
-		if (Double.isNaN(hazardRate))
-			setHazardRate();
-		return hazardRate;
-	}
-
-	public void setHazardRate(double hazardRate) {
-		this.hazardRate = hazardRate;
-	}
-
 	public double getBondPV() {
 		return bondPV;
 	}
 
 	public void setBondPV(double bondValue) {
 		this.bondPV = bondValue;
-	}
-
-	public double getExerciseValue() {
-		if (Double.isNaN(exerciseValue))
-			computeExerciseValue();
-		return exerciseValue;
-	}
-
-	public void setExerciseValue(double exerciseValue) {
-		this.exerciseValue = exerciseValue;
-	}
-
-	public double getContinueValue() {
-		if (Double.isNaN(continueValue))
-			computeContValue();
-		return continueValue;
-	}
-
-	public void setContinueValue(double contValue) {
-		this.continueValue = contValue;
-	}
-
-	public double getConvertibleValue() {
-		if (Double.isNaN(convertibleValue))
-			computeNodeDerivValue();
-		return convertibleValue;
-	}
-
-	public void setConvertibleValue(double nodeDerivValue) {
-		this.convertibleValue = nodeDerivValue;
 	}
 
 	public BinomialTree getMyTree() {
@@ -148,13 +110,4 @@ public class JDBinomialNode extends Node {
 		this.myTree = myTree;
 	}
 
-	@Override
-	public String toString() {
-		return "JDBinomialNode [stockPrice=" + stockPrice + ", continueValue="
-				+ continueValue + ", exerciseValue=" + exerciseValue
-				+ ", convertibleValue=" + convertibleValue + ", getStep()="
-				+ getStep() + ", getNodeNumber()=" + getNodeNumber() + "]";
-	}
-	
-	
 }
