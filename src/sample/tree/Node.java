@@ -1,8 +1,5 @@
 package sample.tree;
 
-import java.util.Map;
-
- 
 /**
  * The Node Class model a node on a Tree
  * Node can point to other nodes (as children)
@@ -14,17 +11,15 @@ import java.util.Map;
 public class Node implements Comparable<Node>    
 {
 	private boolean isRoot, isTerminal;
-	
-	private Map<String, Object> data;
+
 	private Node childUp, childDn;
 	
 	private int step, nodeNumber;
 
-	public Node(boolean isRoot, boolean isTerminal, Map<String, Object> data,
+	public Node(boolean isRoot, boolean isTerminal,
 			Node childUp, Node childDn, int step, int nodeNumber) {
 		this.isRoot = isRoot;
 		this.isTerminal = isTerminal;
-		this.data = data;
 		this.childUp = childUp;
 		this.childDn = childDn;
 		this.step = step;
@@ -50,14 +45,6 @@ public class Node implements Comparable<Node>
 
 	public void setTerminal(boolean isTerminal) {
 		this.isTerminal = isTerminal;
-	}
-
-	public Map<String, Object> getData() {
-		return data;
-	}
-
-	public void setData(Map<String, Object> data) {
-		this.data = data;
 	}
 
 	public Node getChildUp() {

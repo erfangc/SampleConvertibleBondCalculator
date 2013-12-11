@@ -1,7 +1,6 @@
 package sample.tree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
@@ -26,7 +25,7 @@ public class BinomialTree {
 	private ConvertibleBond cb;
 	
 	public enum GraphicType {
-		
+
 		STOCK_PRICE("Stock Price Tree"),
 		CONTINUATION_VALUE("Continuation Value Tree"),
 		DEFAULT_PROBABILITY("Default Probability Tree"),
@@ -51,21 +50,20 @@ public class BinomialTree {
 	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
-		
+
 		LOG.info("Creating Tree with "+nSteps+" Steps");
-		
+
 		// Reset All
 		nodesAL = null;
 		terminalNodes = null;
 		rootNode = null;
+
+		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps][]; // Array Representation of All the Nodes
 		
-		rootNode = new JDBinomialNode(true,false,new HashMap<String, Object>(),null, null, 0, 0);
-		rootNode.setMyTree(this);
-		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps][];		
-		JDBinomialNode[] rootWrapper = new JDBinomialNode[1];
-		rootWrapper[0] = rootNode;
-		nodes[0] = rootWrapper;
-		
+		rootNode = new JDBinomialNode(true,false, null, null, 0, 0);
+		rootNode.setMyTree(this);				
+		nodes[0] = new JDBinomialNode[]{ rootNode };
+
 		// Parallel ArrayList Object
 		nodesAL = new ArrayList<ArrayList<JDBinomialNode>>();
 		ArrayList<JDBinomialNode> rootArrayList = new ArrayList<JDBinomialNode>();
@@ -81,7 +79,7 @@ public class BinomialTree {
 			// the Current Step n/nSteps
 			ArrayList<JDBinomialNode> currentStepAL = new ArrayList<JDBinomialNode>();
 			for (int i = 0; i < n + 1; i++) {
-				currentStep[i] = new JDBinomialNode(false, isTerminal, new HashMap<String, Object>(), null, null, n, i);
+				currentStep[i] = new JDBinomialNode(false, isTerminal, null, null, n, i);
 				currentStep[i].setStep(n);
 				currentStep[i].setNodeNumber(i);
 				currentStep[i].setMyTree(this);

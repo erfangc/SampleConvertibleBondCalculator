@@ -1,8 +1,8 @@
 package sample.tree;
 
-import java.util.Map;
-
 import org.apache.log4j.Logger;
+import org.jfree.date.SerialDate;
+import org.jfree.date.SpreadsheetDate;
 
 public class JDBinomialNode extends Node {
 	
@@ -10,12 +10,12 @@ public class JDBinomialNode extends Node {
 	
 	// Private Fields that Store Crucial Node level Valuation Ingredients
 	private double stockPrice = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, defaultProb = Double.NaN, convertibleValue = Double.NaN, hazardRate = Double.NaN, exerciseValue = Double.NaN;
+	private SerialDate date; // Important for Determining Eligibility for Call/Put/Makewhole etc ... and for Accrued Interest Computation
 	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
 
-	public JDBinomialNode(boolean isRoot, boolean isTerminal,
-			Map<String, Object> data, Node childUp, Node childDn, int step,
+	public JDBinomialNode(boolean isRoot, boolean isTerminal, Node childUp, Node childDn, int step,
 			int nodeNumber) {
-		super(isRoot, isTerminal, data, childUp, childDn, step, nodeNumber);
+		super(isRoot, isTerminal, childUp, childDn, step, nodeNumber);
 	}
 	
 	/*
@@ -96,6 +96,8 @@ public class JDBinomialNode extends Node {
 	}
 	
 	public double getConvertibleValue() {
+		// TODO There needs to be a Feature Processor Object that Takes Care of Processing a set of Bond Features (implements the Feature interface)
+		// For example, even exerciseValue should the result of a feature, namely the conversion feature
 		if (Double.isNaN(convertibleValue)) {
 			convertibleValue = Math.max(getExerciseValue(), getContinueValue());
 		}
@@ -139,6 +141,20 @@ public class JDBinomialNode extends Node {
 		hazardRate = Double.NaN;
 		exerciseValue = Double.NaN;
 		
+	}
+
+	public SerialDate getDate() {
+		if (date == null) {
+			// The Date of the Current Node Depends on the 
+			// Node's Step and the Maturity of the Convert
+			date = new SpreadsheetDate(0, 1, 1970);
+			// TODO Figure out how to retrieve an accurate date given the step # of the current node, the total # of nodes and the Bond's maturity
+		}
+		return date;
+	}
+
+	public void setDate(SerialDate date) {
+		this.date = date;
 	}
 
 }

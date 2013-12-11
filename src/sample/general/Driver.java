@@ -16,18 +16,18 @@ public class Driver {
 	public static SerialDate analysisDate = new SpreadsheetDate(10,12,2013);
 	public static double riskFreeRate = 0.01;
 	
+	public static boolean calcDelta = true, printTree = false;
+	
 	public static void main(String[] args) {
 		
 		PropertyConfigurator.configure("resources/log4j.cfg");
-		
-		boolean calcDelta = true, printTree = false;
-		
+
 		// 3% Dividend, 20% Volatility
 		double stockPx = 55, divYld = 0.03, vol = 0.23;
 		Stock stock = new Stock(stockPx, divYld, vol);
 		
 		// 5 Years to Maturity, 5% Coupon
-		double cvr = 20, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.05;
+		double cvr = 17.5, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.02;
 		ConvertibleBond cb = new ConvertibleBond(cvr, parAmt, new SpreadsheetDate(31,12,2015), cpn, stock);		
 		TreeAnalyticProcessor p = new TreeAnalyticProcessor(cb);		
 		

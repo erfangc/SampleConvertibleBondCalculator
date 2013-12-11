@@ -43,8 +43,8 @@ public class TreeAnalyticProcessor {
 		final double TOLERANCE = 1E-10;
 		final long MAX_ITER = 500;
 		
-		double haz = 0.9;
-		double hazPrev = 0;
+		double haz = 0.5;
+		double hazPrev = 0.05;
 		double hazNext = 0;		
 				
 		double error = 1;
