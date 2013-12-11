@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import sample.bondfeature.FeatureProcessor;
 import sample.instrument.ConvertibleBond;
 
 /**
@@ -17,10 +18,19 @@ import sample.instrument.ConvertibleBond;
 public class BinomialTree {
 
 	public static final Logger LOG = Logger.getLogger(BinomialTree.class);
+
+	// FeatureProcess enables nodes to process complicated Bond Features such as Call/Puts
+	private FeatureProcessor featureProcessor;
 	
-	private ArrayList<ArrayList<JDBinomialNode>> nodesAL; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
-	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
-	private JDBinomialNode rootNode;                         // Entry point on the tree
+	// Shared Parameters for all nodes, from which the node specific fields are determined
+	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt, hazardRateCalibrCnst;
+	
+	// 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
+	private ArrayList<ArrayList<JDBinomialNode>> nodesAL;
+
+	// Entry point on the tree
+	private JDBinomialNode rootNode;                         
+	
 	private int numSteps; 
 	private ConvertibleBond cb;
 	
@@ -45,9 +55,6 @@ public class BinomialTree {
 		}
 	}
 	
-	// Shared Parameters for all nodes, from which the node specific fields are determined
-	private double rf, divYld, vol, upProb, dnProb, upMove, dnMove, dt, hazardRateCalibrCnst;
-	
 	// Non-Recursive Implementation
 	public void createEmptyTree(int nSteps) {
 
@@ -55,7 +62,6 @@ public class BinomialTree {
 
 		// Reset All
 		nodesAL = null;
-		terminalNodes = null;
 		rootNode = null;
 
 		JDBinomialNode[][] nodes = new JDBinomialNode[nSteps][]; // Array Representation of All the Nodes
@@ -87,9 +93,6 @@ public class BinomialTree {
 			}
 			
 			nodes[n] = currentStep;
-			if (isTerminal) {
-				terminalNodes = currentStepAL;
-			}
 			
 			// Having created node[n-1] and node[n], we must associate nodes in n as children of nodes in n-1
 			mapChildren(nodes[n], nodes[n-1]);
@@ -100,16 +103,11 @@ public class BinomialTree {
 		}
 		
 	}	
-	
-	public BinomialTree() {
-		super();
-		createEmptyTree(2); // Default Tree is 2 Steps
-	}
-	
-	public BinomialTree(int nSteps) {
-		super();
+		
+	public BinomialTree(int nSteps, ConvertibleBond cb) {
 		this.numSteps = nSteps;
 		createEmptyTree(nSteps);
+		featureProcessor = new FeatureProcessor(cb); // FeatureProcessor Object will initialize the proper features
 	}
 
 	/**
@@ -156,7 +154,7 @@ public class BinomialTree {
 				// Determine Data to Print
 				switch (type) {
 				case EXERCISE_VALUE:
-					data = node.getExerciseValue();
+					data = node.getConversionValue();
 					break;
 				case CONTINUATION_VALUE:
 					data = node.getContinueValue();
@@ -204,14 +202,6 @@ public class BinomialTree {
 
 	public void setMasterTree(ArrayList<ArrayList<JDBinomialNode>> masterTree) {
 		this.nodesAL = masterTree;
-	}
-
-	public ArrayList<JDBinomialNode> getTerminalNodes() {
-		return terminalNodes;
-	}
-
-	public void setTerminalNodes(ArrayList<JDBinomialNode> terminalNodes) {
-		this.terminalNodes = terminalNodes;
 	}
 
 	public JDBinomialNode getRootNode() {
@@ -324,6 +314,14 @@ public class BinomialTree {
 				node.reset();
 			}
 		}
+	}
+
+	public FeatureProcessor getFeatureProcessor() {
+		return featureProcessor;
+	}
+
+	public void setFeatureProcessor(FeatureProcessor featureProcessor) {
+		this.featureProcessor = featureProcessor;
 	}
 	
 }

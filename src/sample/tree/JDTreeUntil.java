@@ -19,7 +19,7 @@ public class JDTreeUntil {
 	 */
 	public static BinomialTree getTreeForceSteps(ConvertibleBond cb, int treeSteps, double hazardInit) {
 				
-		BinomialTree tree = new BinomialTree(treeSteps);
+		BinomialTree tree = new BinomialTree(treeSteps, cb);
 		
 		double rf = Driver.riskFreeRate;
 		double divYld = cb.getUnderlyingStock().getDivYld();
@@ -42,8 +42,6 @@ public class JDTreeUntil {
 		tree.setDnMove(dnMove);
 		tree.setUpProb(upProb);
 		tree.setDnProb(dnProb);
-		
-		tree.setCb(cb);
 		
 		LOG.info(tree);
 		

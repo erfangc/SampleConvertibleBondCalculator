@@ -4,12 +4,14 @@ import org.apache.log4j.Logger;
 import org.jfree.date.SerialDate;
 import org.jfree.date.SpreadsheetDate;
 
+import sample.bondfeature.FeatureProcessor.FeatureList;
+
 public class JDBinomialNode extends Node {
 	
 	public static final Logger LOG = Logger.getLogger(JDBinomialNode.class);
 	
 	// Private Fields that Store Crucial Node level Valuation Ingredients
-	private double stockPrice = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, defaultProb = Double.NaN, convertibleValue = Double.NaN, hazardRate = Double.NaN, exerciseValue = Double.NaN;
+	private double stockPrice = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, defaultProb = Double.NaN, convertibleValue = Double.NaN, hazardRate = Double.NaN, conversionValue = Double.NaN;
 	private SerialDate date; // Important for Determining Eligibility for Call/Put/Makewhole etc ... and for Accrued Interest Computation
 	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
 
@@ -55,11 +57,10 @@ public class JDBinomialNode extends Node {
 	}
 	
 	public double getContinueValue() {
-		
 		if (Double.isNaN(continueValue)) {
 			// Continuation Value at Terminal Nodes Should be Either Par or Conversion Value or Defaulted Recovery Value
 			if (isTerminal()) {
-				continueValue = Math.max(getExerciseValue(), 100);
+				continueValue = Math.max(getConversionValue(), 100);
 			} else {				
 				// Average of 3 Possible Future States
 				double upProb = myTree.getUpProb();
@@ -78,28 +79,19 @@ public class JDBinomialNode extends Node {
 			}
 		}
 		return continueValue;
-		
 	}
 	
-	public double getExerciseValue() {
-		
-		if (Double.isNaN(exerciseValue)) {
-			double convertRatio = myTree.getCb().getConvertRatio();
-			double convertNotional = myTree.getCb().getNotionalAmt();
-			
-			double numberShrsPer100 = convertRatio / convertNotional * 100;
-			exerciseValue = Math.max( getStockPrice() * numberShrsPer100, 0);
+	public double getConversionValue() {
+		if (Double.isNaN(conversionValue)) {
+			conversionValue = myTree.getFeatureProcessor().processFeature(FeatureList.CONVERSION, this);
 		}
-		
-		return exerciseValue;		
-		
+		return conversionValue;		
 	}
 	
 	public double getConvertibleValue() {
-		// TODO There needs to be a Feature Processor Object that Takes Care of Processing a set of Bond Features (implements the Feature interface)
 		// For example, even exerciseValue should the result of a feature, namely the conversion feature
 		if (Double.isNaN(convertibleValue)) {
-			convertibleValue = Math.max(getExerciseValue(), getContinueValue());
+			convertibleValue = Math.max(getConversionValue(), getContinueValue());
 		}
 		return convertibleValue;
 	}
@@ -139,7 +131,7 @@ public class JDBinomialNode extends Node {
 		defaultProb = Double.NaN;
 		convertibleValue = Double.NaN;
 		hazardRate = Double.NaN;
-		exerciseValue = Double.NaN;
+		conversionValue = Double.NaN;
 		
 	}
 
@@ -147,8 +139,8 @@ public class JDBinomialNode extends Node {
 		if (date == null) {
 			// The Date of the Current Node Depends on the 
 			// Node's Step and the Maturity of the Convert
-			date = new SpreadsheetDate(0, 1, 1970);
 			// TODO Figure out how to retrieve an accurate date given the step # of the current node, the total # of nodes and the Bond's maturity
+			date = new SpreadsheetDate(0, 1, 1970);			
 		}
 		return date;
 	}
