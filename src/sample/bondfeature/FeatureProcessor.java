@@ -12,7 +12,7 @@ import sample.tree.JDBinomialNode;
 // Every Should Tree has One of These
 public class FeatureProcessor {
 	
-	public enum FeatureList {
+	public enum FeatureType {
 		
 		CONVERSION("Conversion"),
 		EUROPEAN_CALL("European Call");
@@ -22,13 +22,13 @@ public class FeatureProcessor {
 		public String toString() {
 			return featureName;
 		}
-		private FeatureList(String name) {
+		private FeatureType(String name) {
 			featureName = name;
 		}
 	}
 	
 	public static final Logger LOG = Logger.getLogger(FeatureProcessor.class);
-	private Map<FeatureList, Feature> features;
+	private Map<FeatureType, Feature> features;
 
 	public Map<String, Double> processNode(JDBinomialNode node) {
 		Map<String, Double> results = new HashMap<String, Double>();
@@ -38,7 +38,7 @@ public class FeatureProcessor {
 		return results;
 	}
 	
-	public double processFeature(FeatureList feature, JDBinomialNode node) {		
+	public double processFeature(FeatureType feature, JDBinomialNode node) {		
 		if (!getFeatures().containsKey(feature)) {
 			LOG.error("Cannot Find Feature: "+feature);
 			return Double.NaN;
@@ -50,22 +50,22 @@ public class FeatureProcessor {
 		return features.get(key);
 	}
 
-	public Feature put(FeatureList key, Feature value) {
+	public Feature put(FeatureType key, Feature value) {
 		return features.put(key, value);
 	}
 
 	// Constructor
 	public FeatureProcessor(ConvertibleBond cb) {
-		features = new HashMap<FeatureList, Feature>();
+		features = new HashMap<FeatureType, Feature>();
 		// Add Features - In Reality We will Need to Query the Bond itself to Determine What Features are Available
-		features.put(FeatureList.CONVERSION, new ConversionFeature(cb));
+		features.put(FeatureType.CONVERSION, new ConversionFeature(cb));
 	}
 
-	public Map<FeatureList, Feature> getFeatures() {
+	public Map<FeatureType, Feature> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Map<FeatureList, Feature> features) {
+	public void setFeatures(Map<FeatureType, Feature> features) {
 		this.features = features;
 	}
 	

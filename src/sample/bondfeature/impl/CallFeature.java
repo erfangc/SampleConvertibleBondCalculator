@@ -5,7 +5,7 @@ import java.util.Map;
 import org.jfree.date.SerialDate;
 
 import sample.bondfeature.Feature;
-import sample.bondfeature.FeatureProcessor.FeatureList;
+import sample.bondfeature.FeatureProcessor.FeatureType;
 import sample.instrument.ConvertibleBond;
 import sample.tree.JDBinomialNode;
 
@@ -33,7 +33,7 @@ public class CallFeature implements Feature {
 
 	@Override
 	public String getFeatureName() {
-		return FeatureList.EUROPEAN_CALL.toString();
+		return FeatureType.EUROPEAN_CALL.toString();
 	}
 
 	public Map<SerialDate, Double> getCallDatePriceMap() {
@@ -53,8 +53,8 @@ public class CallFeature implements Feature {
 	}
 
 	@Override
-	public FeatureList getFeatureEnum() {
-		return FeatureList.EUROPEAN_CALL;
+	public FeatureType getFeatureEnum() {
+		return FeatureType.EUROPEAN_CALL;
 	}
 
 }

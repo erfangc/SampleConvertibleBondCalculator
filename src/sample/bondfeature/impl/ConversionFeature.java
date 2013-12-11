@@ -1,7 +1,7 @@
 package sample.bondfeature.impl;
 
 import sample.bondfeature.Feature;
-import sample.bondfeature.FeatureProcessor.FeatureList;
+import sample.bondfeature.FeatureProcessor.FeatureType;
 import sample.instrument.ConvertibleBond;
 import sample.tree.JDBinomialNode;
 
@@ -29,7 +29,7 @@ public class ConversionFeature implements Feature {
 
 	@Override
 	public String getFeatureName() {
-		return FeatureList.CONVERSION.toString();
+		return FeatureType.CONVERSION.toString();
 	}
 
 	public ConvertibleBond getCb() {
@@ -41,8 +41,8 @@ public class ConversionFeature implements Feature {
 	}
 
 	@Override
-	public FeatureList getFeatureEnum() {
-		return FeatureList.CONVERSION;
+	public FeatureType getFeatureEnum() {
+		return FeatureType.CONVERSION;
 	}
 
 }

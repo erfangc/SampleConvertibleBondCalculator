@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.jfree.date.SerialDate;
 import org.jfree.date.SpreadsheetDate;
 
-import sample.bondfeature.FeatureProcessor.FeatureList;
+import sample.bondfeature.FeatureProcessor.FeatureType;
 import sample.general.Driver;
 
 public class JDBinomialNode extends Node {
@@ -84,7 +84,7 @@ public class JDBinomialNode extends Node {
 	
 	public double getConversionValue() {
 		if (Double.isNaN(conversionValue)) {
-			conversionValue = myTree.getFeatureProcessor().processFeature(FeatureList.CONVERSION, this);
+			conversionValue = myTree.getFeatureProcessor().processFeature(FeatureType.CONVERSION, this);
 		}
 		return conversionValue;		
 	}

@@ -1,6 +1,6 @@
 package sample.bondfeature;
 
-import sample.bondfeature.FeatureProcessor.FeatureList;
+import sample.bondfeature.FeatureProcessor.FeatureType;
 import sample.tree.JDBinomialNode;
 
 public interface Feature {
@@ -34,5 +34,5 @@ public interface Feature {
 	 * Returns the Feature's Name as a instance of the FeatureList Enum
 	 * @return A instance of the FeataureList Enum
 	 */
-	public FeatureList getFeatureEnum();
+	public FeatureType getFeatureEnum();
 }
