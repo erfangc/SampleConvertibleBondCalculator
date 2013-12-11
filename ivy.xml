@@ -24,7 +24,11 @@
         module="SampleConvertibleBondCalculator"
         status="integration">
 	</info>
+	
 	<dependencies>
-		<dependency org="commons-logging" name="commons-logging" rev="1.1.3"/>
+		<!-- Standard Logging for Classes -->
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.3"/>		
+		<!-- jfree jcommon provide Date Classes relevant for Accrued Interest Calc -->
+		<dependency org="jfree" name="jcommon" rev="1.0.16"/>
 	</dependencies>
 </ivy-module>

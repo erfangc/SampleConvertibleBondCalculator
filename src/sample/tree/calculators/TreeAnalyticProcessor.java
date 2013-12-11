@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import sample.general.Driver;
 import sample.instrument.ConvertibleBond;
 import sample.tree.BinomialTree;
 import sample.tree.JDBinomialNode;
@@ -24,17 +23,13 @@ import sample.tree.JDTreeUntil;
  */
 public class TreeAnalyticProcessor {
 
-	public static final Logger LOG = Logger.getLogger(Driver.class);
+	public static final Logger LOG = Logger.getLogger(TreeAnalyticProcessor.class);
 	
 	private BinomialTree tree;
 	private ConvertibleBond cb;
 	
 	public TreeAnalyticProcessor(ConvertibleBond cb) {
 		this.cb = cb;
-	}
-
-	public double calcPrice() {
-		return calcPrice(350);
 	}
 	
 	/**
@@ -45,10 +40,10 @@ public class TreeAnalyticProcessor {
 	 */
 	public double calibrate(double price) {
 		
-		final double TOLERANCE = 1E-2;
+		final double TOLERANCE = 1E-10;
 		final long MAX_ITER = 500;
 		
-		double haz = 2500;
+		double haz = 0.9;
 		double hazPrev = 0;
 		double hazNext = 0;		
 				
@@ -62,7 +57,7 @@ public class TreeAnalyticProcessor {
 	      
 	      double deltaY = currentY - prevY, deltaX = haz-hazPrev;
 	      
-	      hazNext = haz- currentY *(deltaX)/deltaY;
+	      hazNext = haz - currentY *(deltaX)/deltaY;
 	      
 	      hazPrev = haz;
 	      haz = hazNext;
@@ -71,7 +66,8 @@ public class TreeAnalyticProcessor {
 	      iter++;
 	    }
 	    
-	    if (iter == MAX_ITER) LOG.info("calibration cannot find root to match price " + price + " after " + MAX_ITER + " iterations");
+	    if (iter >= MAX_ITER && Math.abs(error)>TOLERANCE) LOG.info("calibration cannot find root to match price " + price + " after " + MAX_ITER + " iterations");
+	    LOG.info("Calibration Status: error="+error+" iter="+iter+" hazNext="+hazNext);
 	    		
 		return hazNext;
 	}
@@ -80,7 +76,7 @@ public class TreeAnalyticProcessor {
 	public double rootFunction(double cnst, double price) {
 		return calcPrice(cnst) - price;
 	}
-	
+
 	/**
 	 * Compute the price of a bond
 	 * The basic steps involved here are:
@@ -92,14 +88,16 @@ public class TreeAnalyticProcessor {
 	 *  
 	 * @return price of the bond
 	 */
-	public double calcPrice(double hazardRateCnst) {
-		
+	public double calcPrice(double hazardRate) {
+			
+		double hrCalibrCoeff = JDTreeUntil.hazardRateToCalibrationCoefficent(hazardRate, cb);
 		// 1,2) Create an empty binomial tree and populate it with the correct parameters
 		if (tree == null) {
-			int treeSteps = System.getProperty("treeSteps") != null && !System.getProperty("treeSteps").isEmpty() ? Integer.valueOf(System.getProperty("treeSteps")) : 10;
-			tree = JDTreeUntil.initializeBinomialTreeWithParams(cb, treeSteps, hazardRateCnst);
+			tree = JDTreeUntil.getDailySteppedTree(cb, hrCalibrCoeff);
+		} else {
+			tree.setHazardRateCalibrCnst(hrCalibrCoeff);
+			tree.resetNodes();
 		}
-		tree.setHazardRateCalibrCnst(hazardRateCnst);
 		
 		// 3) Generate Equity Process for each node
 		tree.getRootNode().setStockPrice(cb.getUnderlyingStock().getCurrentPrice());

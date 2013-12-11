@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import sample.general.Driver;
 import sample.instrument.ConvertibleBond;
 
 /**
@@ -18,7 +17,7 @@ import sample.instrument.ConvertibleBond;
  */
 public class BinomialTree {
 
-	public static final Logger LOG = Logger.getLogger(Driver.class);
+	public static final Logger LOG = Logger.getLogger(BinomialTree.class);
 	
 	private ArrayList<ArrayList<JDBinomialNode>> nodesAL; // 2D array of all nodes, level 1 represent all nodes in a given step, level 2 represent nodes within the step
 	private ArrayList<JDBinomialNode> terminalNodes;         // A subset of all nodes and only contain the terminal nodes on the tree
@@ -27,13 +26,24 @@ public class BinomialTree {
 	private ConvertibleBond cb;
 	
 	public enum GraphicType {
-		STOCK_PRICE,
-		CONTINUATION_VALUE,
-		DEFAULT_PROBABILITY,
-		HAZARD_RATE,
-		CONVERTIBLE_VALUE,
-		EXERCISE_VALUE,
-		CONVERSION_VALUE;
+		
+		STOCK_PRICE("Stock Price Tree"),
+		CONTINUATION_VALUE("Continuation Value Tree"),
+		DEFAULT_PROBABILITY("Default Probability Tree"),
+		HAZARD_RATE("Hazard Rate Tree"),
+		CONVERTIBLE_VALUE("Convertible Value Tree"),
+		EXERCISE_VALUE("Exercise Value Tree");
+		
+		private String label;
+		
+		@Override
+		public String toString() {
+			return label;
+		}
+		
+		GraphicType(String label) {
+			this.label = label;
+		}
 	}
 	
 	// Shared Parameters for all nodes, from which the node specific fields are determined
@@ -119,7 +129,7 @@ public class BinomialTree {
     
 	@Override
 	public String toString() {
-		return "BinomialTree [numSteps=" + numSteps + ", cb=" + cb + ", rf="
+		return "BinomialTree [numSteps=" + numSteps + ", rf="
 				+ rf + ", divYld=" + divYld + ", vol=" + vol + ", upProb="
 				+ upProb + ", dnProb=" + dnProb + ", upMove=" + upMove
 				+ ", dnMove=" + dnMove + ", dt=" + dt
@@ -129,7 +139,7 @@ public class BinomialTree {
 	// Output Methods
 	public String getGraphic(GraphicType type) {    
 		
-		String graphic = "\n"+getGraphicLabel(type)+"\n";
+		String graphic = "\n"+type.toString()+"\n";
 		
 		if (getNumSteps() >= 25) {
 			graphic += "Tree Display Suppressed - Too many Nodes\n";
@@ -187,34 +197,6 @@ public class BinomialTree {
 		}
 		
 		return graphic;
-	}
-	
-	private String getGraphicLabel(GraphicType type) {
-		String label = "";
-		switch (type) {
-			case EXERCISE_VALUE:
-				label = "Exercise Value";
-				break;
-			case CONTINUATION_VALUE:
-				label = "Continuation Value";
-				break;
-			case CONVERTIBLE_VALUE:
-				label = "Convertible Value";
-				break;
-			case STOCK_PRICE:
-				label = "Stock Prices";
-				break;
-			case DEFAULT_PROBABILITY:
-				label = "Default Probabilities";
-				break;
-			case HAZARD_RATE:
-				label = "Hazard Rate";
-				break;
-			default:
-				label = "Node Number";
-				break;
-		}
-		return label;
 	}
 	
 	// Getter and Setters
@@ -336,6 +318,14 @@ public class BinomialTree {
 
 	public void setHazardRateCalibrCnst(double hazardRateCalibrCnst) {
 		this.hazardRateCalibrCnst = hazardRateCalibrCnst;
+	}
+	
+	public void resetNodes() {
+		for (ArrayList<JDBinomialNode> step : nodesAL) {
+			for (JDBinomialNode node : step) {
+				node.reset();
+			}
+		}
 	}
 	
 }
