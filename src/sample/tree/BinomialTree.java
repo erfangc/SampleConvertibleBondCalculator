@@ -107,9 +107,10 @@ public class BinomialTree {
 	public BinomialTree(int nSteps, ConvertibleBond cb) {
 		this.numSteps = nSteps;
 		createEmptyTree(nSteps);
+		this.cb = cb;
 		featureProcessor = new FeatureProcessor(cb); // FeatureProcessor Object will initialize the proper features
 	}
-
+	
 	/**
 	 * Children Must Contain 1 More Node than Parents
 	 * 

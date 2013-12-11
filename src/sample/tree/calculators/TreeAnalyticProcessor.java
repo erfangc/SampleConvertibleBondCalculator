@@ -28,6 +28,11 @@ public class TreeAnalyticProcessor {
 	private BinomialTree tree;
 	private ConvertibleBond cb;
 	
+	public enum TreeSubtype {
+		DailyStepTree,
+		ForcedStepTree
+	}
+	
 	public TreeAnalyticProcessor(ConvertibleBond cb) {
 		this.cb = cb;
 	}
@@ -77,6 +82,10 @@ public class TreeAnalyticProcessor {
 		return calcPrice(cnst) - price;
 	}
 
+	public double calcPrice(double hazardRate) {
+		return calcPrice(hazardRate, TreeSubtype.DailyStepTree, 0);
+	}
+	
 	/**
 	 * Compute the price of a bond
 	 * The basic steps involved here are:
@@ -88,12 +97,22 @@ public class TreeAnalyticProcessor {
 	 *  
 	 * @return price of the bond
 	 */
-	public double calcPrice(double hazardRate) {
+	public double calcPrice(double hazardRate, TreeSubtype treeType, int treeSteps) {
 			
 		double hrCalibrCoeff = JDTreeUntil.hazardRateToCalibrationCoefficent(hazardRate, cb);
 		// 1,2) Create an empty binomial tree and populate it with the correct parameters
 		if (tree == null) {
-			tree = JDTreeUntil.getDailySteppedTree(cb, hrCalibrCoeff);
+			switch (treeType) {
+			case DailyStepTree:
+				tree = JDTreeUntil.getDailySteppedTree(cb, hrCalibrCoeff);
+				break;
+			case ForcedStepTree:
+				tree = JDTreeUntil.getTreeForceSteps(cb, treeSteps, hrCalibrCoeff);
+				break;
+			default:
+				break;
+			}
+			
 		} else {
 			tree.setHazardRateCalibrCnst(hrCalibrCoeff);
 			tree.resetNodes();

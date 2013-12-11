@@ -40,4 +40,9 @@ public class ConversionFeature implements Feature {
 		this.cb = cb;
 	}
 
+	@Override
+	public FeatureList getFeatureEnum() {
+		return FeatureList.CONVERSION;
+	}
+
 }

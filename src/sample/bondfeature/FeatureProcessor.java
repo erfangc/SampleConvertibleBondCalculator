@@ -13,7 +13,10 @@ import sample.tree.JDBinomialNode;
 public class FeatureProcessor {
 	
 	public enum FeatureList {
-		CONVERSION("Conversion");
+		
+		CONVERSION("Conversion"),
+		EUROPEAN_CALL("European Call");
+		
 		private String featureName;
 		@Override
 		public String toString() {
@@ -54,7 +57,7 @@ public class FeatureProcessor {
 	// Constructor
 	public FeatureProcessor(ConvertibleBond cb) {
 		features = new HashMap<FeatureList, Feature>();
-		// Add Features - In Reality We will Need to Query the Bond itself to Determine What Features are Availiable
+		// Add Features - In Reality We will Need to Query the Bond itself to Determine What Features are Available
 		features.put(FeatureList.CONVERSION, new ConversionFeature(cb));
 	}
 

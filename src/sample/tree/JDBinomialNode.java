@@ -5,6 +5,7 @@ import org.jfree.date.SerialDate;
 import org.jfree.date.SpreadsheetDate;
 
 import sample.bondfeature.FeatureProcessor.FeatureList;
+import sample.general.Driver;
 
 public class JDBinomialNode extends Node {
 	
@@ -140,7 +141,10 @@ public class JDBinomialNode extends Node {
 			// The Date of the Current Node Depends on the 
 			// Node's Step and the Maturity of the Convert
 			// TODO Figure out how to retrieve an accurate date given the step # of the current node, the total # of nodes and the Bond's maturity
-			date = new SpreadsheetDate(0, 1, 1970);			
+			int T = myTree.getCb().getDaysToMaturity(Driver.analysisDate);
+			int N = myTree.getNumSteps();
+			int daysSinceAnalysisDate = (getStep() * T / (N-1)); // Round to the Next Integer
+			date = SpreadsheetDate.addDays(daysSinceAnalysisDate, Driver.analysisDate);
 		}
 		return date;
 	}

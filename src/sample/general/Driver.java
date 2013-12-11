@@ -1,5 +1,9 @@
 package sample.general;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jfree.date.SerialDate;
@@ -14,26 +18,27 @@ public class Driver {
 
 	public static final Logger LOG = Logger.getLogger(Driver.class);
 	public static SerialDate analysisDate = new SpreadsheetDate(10,12,2013);
-	public static double riskFreeRate = 0.01;
+	public static double riskFreeRate = 0.02;
 	
-	public static boolean calcDelta = true, printTree = false;
+	public static boolean calcDelta = true, printTree = false, calibrate = false;
 	
 	public static void main(String[] args) {
 		
 		PropertyConfigurator.configure("resources/log4j.cfg");
 
 		// 3% Dividend, 20% Volatility
-		double stockPx = 55, divYld = 0.03, vol = 0.23;
+		double stockPx = 55, divYld = 0.04, vol = 0.23;
 		Stock stock = new Stock(stockPx, divYld, vol);
 		
 		// 5 Years to Maturity, 5% Coupon
-		double cvr = 17.5, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.02;
+		double cvr = 17.5, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.008;
 		ConvertibleBond cb = new ConvertibleBond(cvr, parAmt, new SpreadsheetDate(31,12,2015), cpn, stock);		
 		TreeAnalyticProcessor p = new TreeAnalyticProcessor(cb);		
 		
 		// Valuation Test
 		LOG.info(cb);		
 		LOG.info("Computed Price: "+p.calcPrice(assumedHazardRate));
+		
 		if (printTree) {
 			LOG.info(p.getTree().getGraphic(GraphicType.STOCK_PRICE));
 			LOG.info(p.getTree().getGraphic(GraphicType.EXERCISE_VALUE));
@@ -42,20 +47,26 @@ public class Driver {
 			LOG.info(p.getTree().getGraphic(GraphicType.DEFAULT_PROBABILITY));
 		}
 		
-		// Calibration Test
-		LOG.info("Assuming Price="+convertPrice);
-		double calibrResult = p.calibrate(convertPrice);
-		LOG.info("Calibrated Constant to: "+calibrResult);
+		// Calibration Test (Currently Failing Miserably with my own Implementation of the Secant Method)
+		if (calibrate == true) {
+			LOG.info("Assuming Price="+convertPrice);
+			double calibrResult = p.calibrate(convertPrice);
+			LOG.info("Calibrated Constant to: "+calibrResult);
+		}
 		
+		// Delta Test
 		if (calcDelta==true) {
 			calcDelta(cb, p, assumedHazardRate);
 		}
+		
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		LOG.info("Execution Complete at "+dateFormat.format(new Date()));
 		
 	}
 
 	public static void calcDelta(ConvertibleBond cb, TreeAnalyticProcessor p, double hazardRateConstant) {
 		
-		double origUndPx = cb.getUnderlyingStock().getCurrentPrice(), shkSize = 0.1;
+		double origUndPx = cb.getUnderlyingStock().getCurrentPrice(), shkSize = 0.01;
 		LOG.info("Computing Delta using Shock Size="+shkSize);
 		
 		cb.getUnderlyingStock().setCurrentPrice(origUndPx+shkSize);
