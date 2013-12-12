@@ -17,9 +17,9 @@ public class JDTreeUntil {
 	 * @param hazardInit The initial hazard rate constant
 	 * @return The Binomial Tree Object with all the Shared Parameters Resolved
 	 */
-	public static BinomialTree getTreeForceSteps(ConvertibleBond cb, int treeSteps, double hazardInit) {
+	public static JDBinomialTree getTreeForceSteps(ConvertibleBond cb, int treeSteps, double hazardInit) {
 				
-		BinomialTree tree = new BinomialTree(treeSteps, cb);
+		JDBinomialTree tree = new JDBinomialTree(treeSteps, cb);
 		
 		double rf = Driver.riskFreeRate;
 		double divYld = cb.getUnderlyingStock().getDivYld();
@@ -55,7 +55,7 @@ public class JDTreeUntil {
 	 * @param hazardInit The initial hazard rate constant
 	 * @return The Binomial Tree Object with all the Shared Parameters Resolved
 	 */
-	public static BinomialTree getDailySteppedTree(ConvertibleBond cb, double hazardInit) {
+	public static JDBinomialTree getDailySteppedTree(ConvertibleBond cb, double hazardInit) {
 
 		// Resolve the # of Steps Needed
 		int treeSteps = cb.getDaysToMaturity(Driver.analysisDate);

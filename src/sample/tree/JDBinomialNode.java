@@ -7,16 +7,16 @@ import org.jfree.date.SpreadsheetDate;
 import sample.bondfeature.FeatureProcessor.FeatureType;
 import sample.general.Driver;
 
-public class JDBinomialNode extends Node {
+public class JDBinomialNode extends BinomialNode {
 	
 	public static final Logger LOG = Logger.getLogger(JDBinomialNode.class);
 	
 	// Private Fields that Store Crucial Node level Valuation Ingredients
 	private double stockPrice = Double.NaN, bondPV = Double.NaN, continueValue = Double.NaN, defaultProb = Double.NaN, convertibleValue = Double.NaN, hazardRate = Double.NaN, conversionValue = Double.NaN;
 	private SerialDate date; // Important for Determining Eligibility for Call/Put/Makewhole etc ... and for Accrued Interest Computation
-	private BinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
+	private JDBinomialTree myTree; // Since many metrics crucial to valuation are stored at the tree level
 
-	public JDBinomialNode(boolean isRoot, boolean isTerminal, Node childUp, Node childDn, int step,
+	public JDBinomialNode(boolean isRoot, boolean isTerminal, BinomialNode childUp, BinomialNode childDn, int step,
 			int nodeNumber) {
 		super(isRoot, isTerminal, childUp, childDn, step, nodeNumber);
 	}
@@ -113,11 +113,11 @@ public class JDBinomialNode extends Node {
 		this.bondPV = bondValue;
 	}
 
-	public BinomialTree getMyTree() {
+	public JDBinomialTree getMyTree() {
 		return myTree;
 	}
 
-	public void setMyTree(BinomialTree myTree) {
+	public void setMyTree(JDBinomialTree myTree) {
 		this.myTree = myTree;
 	}
 	

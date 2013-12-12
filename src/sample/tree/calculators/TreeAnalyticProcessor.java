@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import sample.instrument.ConvertibleBond;
-import sample.tree.BinomialTree;
+import sample.tree.JDBinomialTree;
 import sample.tree.JDBinomialNode;
 import sample.tree.JDTreeUntil;
 
@@ -25,7 +25,7 @@ public class TreeAnalyticProcessor {
 
 	public static final Logger LOG = Logger.getLogger(TreeAnalyticProcessor.class);
 	
-	private BinomialTree tree;
+	private JDBinomialTree tree;
 	private ConvertibleBond cb;
 	
 	public enum TreeSubtype {
@@ -141,11 +141,11 @@ public class TreeAnalyticProcessor {
 	}
 	
 	// Setters and Getters
-	public BinomialTree getTree() {
+	public JDBinomialTree getTree() {
 		return tree;
 	}
 
-	public void setTree(BinomialTree tree) {
+	public void setTree(JDBinomialTree tree) {
 		this.tree = tree;
 	}
 

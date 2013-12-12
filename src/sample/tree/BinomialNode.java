@@ -8,16 +8,16 @@ package sample.tree;
  * @author erfangc
  *
  */
-public class Node implements Comparable<Node>    
+public class BinomialNode implements Comparable<BinomialNode>    
 {
 	private boolean isRoot, isTerminal;
 
-	private Node childUp, childDn;
+	private BinomialNode childUp, childDn;
 	
 	private int step, nodeNumber;
 
-	public Node(boolean isRoot, boolean isTerminal,
-			Node childUp, Node childDn, int step, int nodeNumber) {
+	public BinomialNode(boolean isRoot, boolean isTerminal,
+			BinomialNode childUp, BinomialNode childDn, int step, int nodeNumber) {
 		this.isRoot = isRoot;
 		this.isTerminal = isTerminal;
 		this.childUp = childUp;
@@ -27,7 +27,7 @@ public class Node implements Comparable<Node>
 	}
 
 	@Override
-	public int compareTo(Node o) {
+	public int compareTo(BinomialNode o) {
 		return 0;
 	}
 
@@ -47,19 +47,19 @@ public class Node implements Comparable<Node>
 		this.isTerminal = isTerminal;
 	}
 
-	public Node getChildUp() {
+	public BinomialNode getChildUp() {
 		return childUp;
 	}
 
-	public void setChildUp(Node childUp) {
+	public void setChildUp(BinomialNode childUp) {
 		this.childUp = childUp;
 	}
 
-	public Node getChildDn() {
+	public BinomialNode getChildDn() {
 		return childDn;
 	}
 
-	public void setChildDn(Node childDn) {
+	public void setChildDn(BinomialNode childDn) {
 		this.childDn = childDn;
 	}
 

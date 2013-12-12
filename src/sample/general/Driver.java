@@ -11,8 +11,9 @@ import org.jfree.date.SpreadsheetDate;
 
 import sample.instrument.ConvertibleBond;
 import sample.instrument.Stock;
-import sample.tree.BinomialTree.GraphicType;
+import sample.tree.JDBinomialTree.GraphicType;
 import sample.tree.calculators.TreeAnalyticProcessor;
+import sample.tree.calculators.TreeAnalyticProcessor.TreeSubtype;
 
 public class Driver {
 
@@ -37,7 +38,11 @@ public class Driver {
 		
 		// Valuation Test
 		LOG.info(cb);		
-		LOG.info("Computed Price: "+p.calcPrice(assumedHazardRate));
+		LOG.info("Computed Price of a Daily Step Tree: "+p.calcPrice(assumedHazardRate));
+		LOG.info("Computed Price of a 5 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 5));
+		LOG.info("Computed Price of a 10 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 10));
+		LOG.info("Computed Price of a 50 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 50));
+		LOG.info("Computed Price of a 100 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 100));
 		
 		if (printTree) {
 			LOG.info(p.getTree().getGraphic(GraphicType.STOCK_PRICE));

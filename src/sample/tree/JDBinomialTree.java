@@ -15,9 +15,9 @@ import sample.instrument.ConvertibleBond;
  * @author erfangc
  *
  */
-public class BinomialTree {
+public class JDBinomialTree {
 
-	public static final Logger LOG = Logger.getLogger(BinomialTree.class);
+	public static final Logger LOG = Logger.getLogger(JDBinomialTree.class);
 
 	// FeatureProcess enables nodes to process complicated Bond Features such as Call/Puts
 	private FeatureProcessor featureProcessor;
@@ -104,7 +104,7 @@ public class BinomialTree {
 		
 	}	
 		
-	public BinomialTree(int nSteps, ConvertibleBond cb) {
+	public JDBinomialTree(int nSteps, ConvertibleBond cb) {
 		this.numSteps = nSteps;
 		createEmptyTree(nSteps);
 		this.cb = cb;
