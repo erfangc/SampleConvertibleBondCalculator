@@ -70,7 +70,7 @@ public class JDTreeUntil {
 	 * @return The coefficient to arrive at node specific hazard rate 
 	 */
 	public static double hazardRateToCalibrationCoefficent(double hazardRate, ConvertibleBond cb) {
-		return hazardRate * Math.pow(cb.getUnderlyingStock().getCurrentPrice(), 2);
+		return hazardRate * Math.pow(cb.getUnderlyingStock().getCurrentPrice(), 1);
 	}
 	
 }

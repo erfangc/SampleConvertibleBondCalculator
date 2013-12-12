@@ -21,7 +21,7 @@ public class Driver {
 	public static SerialDate analysisDate = new SpreadsheetDate(10,12,2013);
 	public static double riskFreeRate = 0.02;
 	
-	public static boolean calcDelta = true, printTree = false, calibrate = false;
+	public static boolean calcDelta = true, printTree = true, calibrate = false;
 	
 	public static void main(String[] args) {
 		
@@ -32,21 +32,32 @@ public class Driver {
 		Stock stock = new Stock(stockPx, divYld, vol);
 		
 		// 5 Years to Maturity, 5% Coupon
-		double cvr = 17.5, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.008;
+		double cvr = 17.5, parAmt = 1000, cpn = 5.0, convertPrice = 110, assumedHazardRate = 0.1;
 		ConvertibleBond cb = new ConvertibleBond(cvr, parAmt, new SpreadsheetDate(31,12,2015), cpn, stock);		
 		TreeAnalyticProcessor p = new TreeAnalyticProcessor(cb);		
 		
 		// Valuation Test
 		LOG.info(cb);		
 		LOG.info("Computed Price of a Daily Step Tree: "+p.calcPrice(assumedHazardRate));
-		LOG.info("Computed Price of a 5 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 5));
-		LOG.info("Computed Price of a 10 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 10));
-		LOG.info("Computed Price of a 50 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 50));
-		LOG.info("Computed Price of a 100 Step Tree: "+(new TreeAnalyticProcessor(cb)).calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 100));
+		p.setTree(null);
+		LOG.info("Computed Price of a 5 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 5));
+		p.setTree(null);
+		LOG.info("Computed Price of a 10 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 10));
+		p.setTree(null);
+		LOG.info("Computed Price of a 50 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 50));
+		p.setTree(null);
+		LOG.info("Computed Price of a 100 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 100));
+		p.setTree(null);
+		LOG.info("Computed Price of a 200 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 200));
+		p.setTree(null);
+		LOG.info("Computed Price of a 500 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 500));
+		p.setTree(null);
 		
 		if (printTree) {
+			p.setTree(null);
+			LOG.info("Computed Price of a 10 Step Tree: "+p.calcPrice(assumedHazardRate, TreeSubtype.ForcedStepTree, 10));
 			LOG.info(p.getTree().getGraphic(GraphicType.STOCK_PRICE));
-			LOG.info(p.getTree().getGraphic(GraphicType.EXERCISE_VALUE));
+			LOG.info(p.getTree().getGraphic(GraphicType.CONVERSION_VALUE));
 			LOG.info(p.getTree().getGraphic(GraphicType.CONVERTIBLE_VALUE));
 			LOG.info(p.getTree().getGraphic(GraphicType.CONTINUATION_VALUE));
 			LOG.info(p.getTree().getGraphic(GraphicType.DEFAULT_PROBABILITY));
@@ -70,7 +81,6 @@ public class Driver {
 	}
 
 	public static void calcDelta(ConvertibleBond cb, TreeAnalyticProcessor p, double hazardRateConstant) {
-		
 		double origUndPx = cb.getUnderlyingStock().getCurrentPrice(), shkSize = 0.01;
 		LOG.info("Computing Delta using Shock Size="+shkSize);
 		

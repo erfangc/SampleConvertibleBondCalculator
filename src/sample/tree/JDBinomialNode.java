@@ -25,10 +25,10 @@ public class JDBinomialNode extends BinomialNode {
 	 * Calculation Functions
 	 */
 	
-	// Simple Equity-Credit link: Lambda = c / S^2
+	// Simple Equity-Credit link: Lambda = c / S
 	public double getHazardRate() {
 		if (Double.isNaN(hazardRate))
-			hazardRate = getMyTree().getHazardRateCalibrCnst()/Math.pow(getStockPrice(), 2); 
+			hazardRate = getMyTree().getHazardRateCalibrCnst()/Math.pow(getStockPrice(), 1); 
 		return hazardRate;
 	}
 	

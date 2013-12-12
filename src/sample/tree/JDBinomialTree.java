@@ -41,7 +41,7 @@ public class JDBinomialTree {
 		DEFAULT_PROBABILITY("Default Probability Tree"),
 		HAZARD_RATE("Hazard Rate Tree"),
 		CONVERTIBLE_VALUE("Convertible Value Tree"),
-		EXERCISE_VALUE("Exercise Value Tree");
+		CONVERSION_VALUE("Conversion Value Tree");
 		
 		private String label;
 		
@@ -154,7 +154,7 @@ public class JDBinomialTree {
 				double data = 0.0;
 				// Determine Data to Print
 				switch (type) {
-				case EXERCISE_VALUE:
+				case CONVERSION_VALUE:
 					data = node.getConversionValue();
 					break;
 				case CONTINUATION_VALUE:
