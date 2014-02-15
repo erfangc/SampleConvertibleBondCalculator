@@ -5,3 +5,5 @@ This Sample Program will Use a Basic Binomial + Default Node Tree to Simulate a 
 
 More Options will be Provided to Compute Greeks and Other Sensitivities
 
+The program is written in Java and heavily utilize OOP concepts
+

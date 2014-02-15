@@ -94,7 +94,10 @@ public class TreeAnalyticProcessor {
 	 * 2) Populate the Shared parameters for every node, which is stored in the tree (not in the nodes) (Volatility, Up Move Size ... etc )
 	 * 3) Generate the Equity prices associated with each node
 	 * 4) Backward Induct the Bond's price by calling getDerivValue() on the Terminal nodes then move backwards
-	 *  
+	 * @param hazardRate - the hazard rate to be used
+	 * @param treeType - a member of the TreeSubtype enum
+	 * @param treeSteps - # of steps in the tree
+	 * 
 	 * @return price of the bond
 	 */
 	public double calcPrice(double hazardRate, TreeSubtype treeType, int treeSteps) {
